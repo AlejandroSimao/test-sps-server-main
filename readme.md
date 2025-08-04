@@ -1,52 +1,163 @@
-----------------------------------
-ESPANHOL
-----------------------------------
+---
 
-## Prueba NODE
+## 🛡️ Autenticação
 
-- Crear un CRUD (API REST) en Node para el registro de usuarios.
-- Para la creación de la prueba, utilizar un repositorio falso de usuarios (puede ser en memoria).
+Todas as rotas, exceto `/login`, são protegidas. Para acessá-las, é necessário fornecer um token JWT no cabeçalho da requisição:
 
-## Reglas
+```
+Authorization: Bearer SEU_TOKEN_AQUI
+```
 
-- Debe existir un usuario administrador previamente registrado para utilizar la autenticación (no es necesario cifrar la contraseña):
+---
+
+## 📌 Endpoints da API
+
+### 🔐 POST `/login`
+
+Autentica o usuário e retorna um token JWT.
+
+**Body JSON:**
+
+```json
 {
-  "name": "admin",
-  "email": "admin@spsgroup.com.br",
-  "type": "admin",
-  "password": "1234"
+  "email": "usuario@email.com",
+  "senha": "123456"
 }
+```
 
-- Crear una ruta de autenticación (token Jwt).
-- Las rutas de la API solo pueden ser ejecutadas si el usuario está autenticado.
-- Debe ser posible añadir usuarios con los campos: email, nombre, type, password.
-- No debe ser posible registrar un correo electrónico ya existente.
-- Debe ser posible eliminar usuarios.
-- Debe ser posible modificar los datos de un usuario.
+**Resposta:**
 
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5..."
+}
+```
 
-----------------------------------
-PORTUGUÊS
-----------------------------------
+---
 
-# Teste NODE
+### 📄 GET `/users`
 
-- Criar um CRUD (API REST) em node para cadastro de usuários
-- Para a criação do teste utilizar um repositório fake dos usuários. (Pode ser em memória)
+Retorna a lista de todos os usuários (requer token JWT).
 
-## Regras
+**Resposta:**
 
-- Deve existir um usuário admin previamente cadastrado para utilizar autenticação (não precisa criptografar a senha);
+```json
+[
   {
-    name: "admin",
-    email: "admin@spsgroup.com.br",
-    type: "admin"
-    password: "1234"
+    "id": 1,
+    "nome": "João Silva",
+    "email": "joao@email.com"
   }
+]
+```
 
-- Criar rota de autenticação (Jwt token)
-- As rotas da API só podem ser executadas se estiver autenticada
-- Deve ser possível adicionar usuários. Campos: email, nome, type, password
-- Não deve ser possível cadastrar o e-mail já cadastrado
-- Deve ser possível remover usuário
-- Deve ser possível alterar os dados do usuário
+---
+
+### 🔍 GET `/users/:id`
+
+Retorna um usuário específico.
+
+**Exemplo:** `GET /users/3`
+
+**Resposta:**
+
+```json
+{
+  "id": 3,
+  "nome": "Maria Oliveira",
+  "email": "maria@email.com"
+}
+```
+
+---
+
+### ➕ POST `/users`
+
+Cadastra um novo usuário.
+
+**Body JSON:**
+
+```json
+{
+  "nome": "Novo Usuário",
+  "email": "novo@email.com",
+  "senha": "senha123"
+}
+```
+
+**Resposta:**
+
+```json
+{
+  "message": "Usuário cadastrado com sucesso"
+}
+```
+
+---
+
+### ✏️ PUT `/users/:id`
+
+Atualiza os dados de um usuário existente.
+
+**Body JSON:**
+
+```json
+{
+  "nome": "Nome Atualizado",
+  "email": "atualizado@email.com"
+}
+```
+
+**Resposta:**
+
+```json
+{
+  "message": "Usuário atualizado com sucesso"
+}
+```
+
+---
+
+### ❌ DELETE `/users/:id`
+
+Remove um usuário.
+
+**Resposta:**
+
+```json
+{
+  "message": "Usuário removido com sucesso"
+}
+```
+
+---
+
+## ▶️ Como Executar o Projeto
+
+1. **Clone o repositório:**
+
+```bash
+git clone https://github.com/seu-usuario/sua-api.git
+cd sua-api
+```
+
+2. **Instale as dependências:**
+
+```bash
+npm install
+```
+
+3. **Inicie o servidor:**
+
+```bash
+npm run dev
+```
+
+---
+
+## ✅ Testando com Insomnia ou Postman
+
+1. Faça um `POST /login` e copie o token da resposta.
+2. Use esse token como **Bearer Token** nas próximas requisições.
+
+---

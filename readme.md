@@ -1,4 +1,4 @@
----
+
 
 ## 🛡️ Autenticação
 
@@ -8,7 +8,7 @@ Todas as rotas, exceto `/login`, são protegidas. Para acessá-las, é necessár
 Authorization: Bearer SEU_TOKEN_AQUI
 ```
 
----
+
 
 ## 📌 Endpoints da API
 

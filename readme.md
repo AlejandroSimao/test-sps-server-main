@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ---
 ## 🛠️ Configuração do Banco de Dados MySQL
 Este projeto agora utiliza MySQL como banco de dados principal.

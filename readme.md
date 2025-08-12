@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 ## 🛠️ Configuração do Banco de Dados MySQL
 Este projeto agora utiliza MySQL como banco de dados principal.
@@ -34,6 +35,9 @@ DB_PASS=
 ---
 
 ---
+=======
+
+>>>>>>> d4707ec57d6059b61b63640763bbf56da2327654
 
 ## 🛡️ Autenticação
 
@@ -43,7 +47,7 @@ Todas as rotas, exceto `/login`, são protegidas. Para acessá-las, é necessár
 Authorization: Bearer SEU_TOKEN_AQUI
 ```
 
----
+
 
 ## 📌 Endpoints da API
 

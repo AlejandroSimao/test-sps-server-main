@@ -1,4 +1,39 @@
 ---
+## 🛠️ Configuração do Banco de Dados MySQL
+Este projeto agora utiliza MySQL como banco de dados principal.
+
+1️⃣ Instalar o MySQL
+Certifique-se de ter o MySQL instalado na sua máquina.
+
+2️⃣ Criar o Banco de Dados
+O projeto efetua a criação automatica do banco de dados e a adição de um usuário administrador.
+
+3️⃣ Configurar as Credenciais no .env
+O projeto efetua automaticamente a criação do banco de dados (se não existir) e adiciona um usuário administrador padrão.
+
+Usuário admin padrão criado automaticamente:
+
+```json
+email: admin@spsgroup.com.br
+senha: 1234
+```
+
+3️⃣ Configurar as Credenciais no .env
+Crie um arquivo .env na raiz do projeto com as credenciais do seu banco MySQL:
+---
+
+PORT=3000
+JTW_SECRET='test-sps-server-main'
+DB_HOST=localhost
+DB_NAME=test_sps_db
+DB_USER=root
+DB_PASS=
+
+---
+
+---
+
+---
 
 ## 🛡️ Autenticação
 

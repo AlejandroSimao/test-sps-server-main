@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 const jwt = require('jsonwebtoken');
-const SECRET = 'test-sps-server-main'; // Chave secreta para assinatura dos tokens JWT
+const SECRET = process.env.JTW_SECRET; // Chave secreta para assinatura dos tokens JWT
 
 //Geração e verificação de tokens JWT
 module.exports = {

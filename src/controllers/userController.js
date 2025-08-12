@@ -1,72 +1,64 @@
-const userModel = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwt');
+const userService = require('../services/userService');
 
 // Login de usuário
-exports.login = (req, res) => {
-    const { email, password } = req.body;
-    const user = userModel.findByEmail(email);
+async function login(req, res) {
+  const { email, password } = req.body;
+  const user = await userService.findByEmail(email);
 
-    if (!user || !bcrypt.compareSync(password, user.password))
-        return res.status(401).json({ error: 'Credenciais inválidas' });
+  if (!user || !bcrypt.compareSync(password, user.password))
+    return res.status(401).json({ error: 'Credenciais inválidas' });
 
-    const token = generateToken({ email: user.email, type: user.type });
-    res.json({ token });
-};
+  const token = generateToken({ email: user.email, type: user.type });
+  res.json({ token });
+}
 // Registro de novo usuário
-exports.register = (req, res) => {
-    const { email, name, type, password } = req.body;
-
-    if (userModel.findByEmail(email))
-        return res.status(400).json({ error: 'E-mail já cadastrado' });
-
-    const hashedPassword = bcrypt.hashSync(password, 8);
-    userModel.add({ email, name, type, password: hashedPassword });
-
-    res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
-};
+async function register(req, res, next) {
+  try {
+    const newUser = await userService.register(req.body);
+    res.status(201).json(newUser);
+  } catch (err) {
+    next(err);
+  }
+}
 // Edição de usuário
-exports.edit = (req, res) => {
-    const { id } = req.params;
-    const { name, type, email, password } = req.body;
-
-    const user = userModel.findById(id);
-    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
-
-    const updatedData = {
-        name: name || user.name,
-        type: type || user.type,
-        email: email || user.email,
-        password: password ? bcrypt.hashSync(password, 8) : user.password,
-    };
-
-    userModel.update(id, updatedData);
-    res.json({ message: 'Usuário atualizado com sucesso' });
-};
+async function edit(req, res, next) {
+  try {
+    const updatedUser = await userService.edit(req.params.id, req.body);
+    res.json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
+}
 // Remoção de usuário
-exports.remove = (req, res) => {
-    const { id } = req.params;
-
-    const user = userModel.findById(id);
-    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
-    if (user.type === 'admin')
-        return res
-            .status(403)
-            .json({ error: 'Não é possível remover um usuário admin' });
-    userModel.remove(id);
-    res.json({ message: 'Usuário removido com sucesso' });
-};
+async function remove(req, res, next) {
+  try {
+    await userService.remove(req.params.id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
 // Listagem de todos os usuários
-exports.getAll = (req, res) => {
-    res.json(userModel.getAll());
-};
+async function getAll(req, res, next) {
+  try {
+    const users = await userService.getAll();
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
+}
 // Busca usuário por ID
-exports.getById = (req, res) => {
-    const { id } = req.params;
-    const user = userModel.findById(id);
+async function getById(req, res, next) {
+  try {
+    const user = await userService.getById(req.params.id);
+    if (!user)
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+}
 
-    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
-
-    const { password, ...userWithoutPassword } = user;
-    res.json(userWithoutPassword);
-};
+module.exports = { login, getAll, getById, register, edit, remove };
